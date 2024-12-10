@@ -2,6 +2,7 @@ import express from 'express';
 import { PrismaClient } from '@prisma/client';
 
 const app = express();
+app.use(express.json());
 const prisma = new PrismaClient();
 
 app.get('/', (req, res) => {
@@ -12,7 +13,7 @@ app.get('/', (req, res) => {
 
 app.post('/', async (req, res) => {
     try {
-        const {email , password} = req.body();
+        const {email , password} = req.body;
         await prisma.user.create({
             data : {
                 email,
@@ -23,6 +24,7 @@ app.post('/', async (req, res) => {
             message : 'user added successfully!'
         })
     } catch (err) {
+        console.log(err);
         res.json({
             message : 'invalid inputs!'
         })
